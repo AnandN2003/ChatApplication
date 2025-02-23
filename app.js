@@ -5,7 +5,7 @@ const PORT = 4000;
 const server = app.listen(PORT,()=>{
     console.log(`✌chat server running on port ${PORT}`);
 });
-
+//server side
 const io = require("socket.io")(server);
 
 let socketsconnected = new Set();
@@ -25,4 +25,11 @@ function onConnected(socket){
         socketsconnected.delete(socket.id);
         io.emit('clients-total',socketsconnected.size);
     })
+
+    socket.on("userdata",(data)=>{
+        console.log("recieved userdata",data);
+        socket.broadcast.emit('chat-message',data);
+    })
 }
+
+
